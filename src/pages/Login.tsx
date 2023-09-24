@@ -111,6 +111,9 @@ const Login = () => {
           >
             Log In
           </button>
+          <a href="/signup" className="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Sign Up
+          </a>
         </form>
       </div>
       <Snackbar
