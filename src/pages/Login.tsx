@@ -23,6 +23,7 @@ const Login = () => {
         localStorage.setItem("type", user_type);
         setSnackbarMessage("Login successful");
         setSnackbarOpen(true);
+        console.log(response);
       }
     } catch (error) {
       setSnackbarOpen(true);
@@ -107,7 +108,7 @@ const Login = () => {
                 </label>
               </div>
               <div className="text-sm">
-                <a href="#" className="text-indigo-600 hover:underline">
+                <a href="/reconfirm" className="text-indigo-600 hover:underline">
                   Resend Email Confirmation?
                 </a>
               </div>

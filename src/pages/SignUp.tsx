@@ -27,7 +27,8 @@ const SignUp = () => {
 
       if (response.status === 201) {
         setSnackbarMessage("Sign up successfully. Email Confirmation Sent");
-        setSnackbarOpen(true)
+        setSnackbarOpen(true);
+        console.log(response);
         setTimeout(() => {
           window.location.href = "/login";
         }, 2000);
