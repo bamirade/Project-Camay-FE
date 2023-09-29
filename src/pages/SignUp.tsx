@@ -12,8 +12,18 @@ const SignUp = () => {
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null);
 
+  const isFormEmpty = () => {
+    return !username || !email || !password || !city;
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (isFormEmpty()) {
+      setSnackbarMessage("Please fill in all required fields.");
+      setSnackbarOpen(true);
+      return;
+    }
+
     try {
       const response = await axios.post(`${key.API_URL}/register`, {
         user: {
@@ -52,7 +62,7 @@ const SignUp = () => {
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-cover bg-center"
-      style={{ backgroundImage: 'url("/background-image.jpg")' }}
+      style={{ backgroundImage: 'url("/background-image.webp")' }}
     >
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="absolute inset-0 flex items-center justify-center">
@@ -73,8 +83,8 @@ const SignUp = () => {
                 name="username"
                 type="text"
                 autoComplete="username"
-                required
-                className="block w-full px-4 py-2 border rounded-md focus:ring focus:ring-indigo-500 placeholder-gray-400"
+                style={{ borderColor: "#D8C1A9" }}
+                className="block w-full px-4 py-2 border-[#D8C1A9] rounded-md focus:ring focus:ring-[#E8D9C2] placeholder-gray-400"
                 placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -93,8 +103,7 @@ const SignUp = () => {
                 name="email"
                 type="email"
                 autoComplete="email"
-                required
-                className="block w-full px-4 py-2 border rounded-md focus:ring focus:ring-indigo-500 placeholder-gray-400"
+                className="block w-full px-4 py-2 border rounded-md focus:ring focus:ring-[#E8D9C2] placeholder-gray-400"
                 placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -113,8 +122,7 @@ const SignUp = () => {
                 name="password"
                 type="password"
                 autoComplete="new-password"
-                required
-                className="block w-full px-4 py-2 border rounded-md focus:ring focus:ring-indigo-500 placeholder-gray-400"
+                className="block w-full px-4 py-2 border rounded-md focus:ring focus:ring-[#E8D9C2] placeholder-gray-400"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -133,8 +141,7 @@ const SignUp = () => {
                 name="city"
                 type="text"
                 autoComplete="address-level2"
-                required
-                className="block w-full px-4 py-2 border rounded-md focus:ring focus:ring-indigo-500 placeholder-gray-400"
+                className="block w-full px-4 py-2 border rounded-md focus:ring focus:ring-[#E8D9C2] placeholder-gray-400"
                 placeholder="City"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
@@ -146,7 +153,7 @@ const SignUp = () => {
                 User Type
               </label>
               <select
-                className="block w-full px-4 py-2 border rounded-md focus:ring focus:ring-indigo-500"
+                className="block w-full px-4 py-2 border rounded-md focus:ring focus:ring-[#E8D9C2]"
                 onChange={(e) => setUserType(e.target.value)}
               >
                 <option value="Buyer">Buyer</option>
@@ -156,13 +163,18 @@ const SignUp = () => {
 
             <button
               type="submit"
-              className="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className={`w-full py-2 px-4 ${
+                isFormEmpty()
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-[#D8C1A9] hover:bg-[#E8D9C2] text-white"
+              } font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+              disabled={isFormEmpty()}
             >
               Sign Up
             </button>
             <p className="text-center text-gray-500 text-sm">
               Already have an account?{" "}
-              <a href="/login" className="text-indigo-600 hover:underline">
+              <a href="/login" className="text-[#D8C1A9] hover:underline">
                 Log in
               </a>
             </p>

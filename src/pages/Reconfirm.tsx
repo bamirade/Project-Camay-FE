@@ -43,7 +43,7 @@ const Reconfirm = () => {
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-cover bg-center"
-      style={{ backgroundImage: 'url("/background-image.jpg")' }}
+      style={{ backgroundImage: 'url("/background-image.webp")' }}
     >
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="absolute inset-0 flex items-center justify-center">
@@ -74,13 +74,13 @@ const Reconfirm = () => {
 
             <button
               type="submit"
-              className="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="w-full py-2 px-4 bg-[#D8C1A9] hover:bg-[#E8D9C2] text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Resend Confirmation Email
             </button>
             <p className="text-center text-gray-500 text-sm">
               Already have an account?{" "}
-              <a href="/login" className="text-indigo-600 hover:underline">
+              <a href="/login" className="text-[#D8C1A9] hover:underline">
                 Log in
               </a>
             </p>

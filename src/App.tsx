@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";
 import Reconfirm from "./pages/Reconfirm";
+import Cart from "./pages/Cart";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -32,6 +33,7 @@ function App() {
       ) : (
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/cart" element={<Cart />} />
 
           {!isLoggedIn && (
             <>

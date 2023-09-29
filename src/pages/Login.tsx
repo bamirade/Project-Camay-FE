@@ -44,7 +44,7 @@ const Login = () => {
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-cover bg-center"
-      style={{ backgroundImage: 'url("/background-image.jpg")' }}
+      style={{ backgroundImage: 'url("/background-image.webp")' }}
     >
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="absolute inset-0 flex items-center justify-center">
@@ -108,7 +108,7 @@ const Login = () => {
                 </label>
               </div>
               <div className="text-sm">
-                <a href="/reconfirm" className="text-indigo-600 hover:underline">
+                <a href="/reconfirm" className="text-[#D8C1A9] hover:underline">
                   Resend Email Confirmation?
                 </a>
               </div>
@@ -116,13 +116,13 @@ const Login = () => {
 
             <button
               type="submit"
-              className="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="w-full py-2 px-4 bg-[#D8C1A9] hover:bg-[#E8D9C2] text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Log In
             </button>
             <p className="text-center text-gray-500 text-sm">
               Don't have an account?{" "}
-              <a href="/signup" className="text-indigo-600 hover:underline">
+              <a href="/signup" className="text-[#D8C1A9] hover:underline">
                 Sign Up
               </a>
             </p>
