@@ -24,6 +24,9 @@ const Login = () => {
         setSnackbarMessage("Login successful");
         setSnackbarOpen(true);
         console.log(response);
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 2000);
       }
     } catch (error) {
       setSnackbarOpen(true);

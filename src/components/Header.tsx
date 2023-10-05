@@ -1,14 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
   return (
-    <header className="bg-white p-4 flex items-center justify-between" style={{ boxShadow: '0 2px 4px rgba(216, 193, 169, 0.5)' }}>
+    <header
+      className="bg-white p-4 flex items-center justify-between"
+      style={{ boxShadow: "0 2px 4px rgba(216, 193, 169, 0.5)" }}
+    >
       <div className="flex grow-0 lg:hidden">
         <button
           onClick={toggleMenu}
@@ -52,12 +66,30 @@ function Header() {
           isMenuOpen ? "flex h-16 items-center" : "hidden"
         }`}
       >
-        <a
-          href="/login"
-          className="text-black hover:text-gray-600 transition duration-300"
-        >
-          Login
-        </a>
+        {isLoggedIn ? (
+          <>
+            <a
+              href="/"
+              className="text-black hover:text-gray-600 transition duration-300 font-semibold"
+            >
+              Home
+            </a>
+            <a
+              href="/profile"
+              className="text-black hover:text-gray-600 transition duration-300 font-semibold"
+            >
+              Profile
+            </a>
+          </>
+        ) : (
+          <a
+            href="/login"
+            className="text-black hover:text-gray-600 transition duration-300 font-semibold"
+          >
+            Login
+          </a>
+        )}
+
         <a
           href="/cart"
           className="text-black hover:text-gray-600 transition duration-300"
