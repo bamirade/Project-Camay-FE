@@ -18,52 +18,61 @@ const ArtistProfile: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get(`${key.API_URL}/artists/${username}`)
-      .then((response) => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${key.API_URL}/artists/${username}`);
         setArtistData(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching artist data:", error);
-        if (error.response && error.response.status === 404) {
+        console.log(response.data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          const errorMessage = error.response?.data || error.message;
+          console.log(errorMessage);
           navigate("/not-found");
+        } else {
+          console.error(`Unexpected Error:`, error);
         }
-        console.log(error);
-      });
+      }
+    };
+
+    fetchData();
   }, [username, navigate]);
 
   return (
-    <div className="container mx-auto mt-5">
+    <div className="mx-auto mt-5">
       {artistData ? (
         <>
           <Header />
-          <div>
-            <div className="relative">
+            <div className="relative h-40">
               <img
                 src={artistData.cover_url || "/default_cover.webp"}
                 alt="Profile Cover"
-                className="w-full h-40 object-cover"
+                className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-black opacity-40"></div>
             </div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+
+            <div className="relative flex justify-center -mt-16 h-40">
               <img
                 src={artistData.avatar_url || "/default_avatar.webp"}
                 alt="Avatar"
-                className="w-24 h-24 rounded-full border-4 border-white"
+                className="w-24 h-24 rounded-full border-4 border-white shadow-lg h-full w-auto"
               />
             </div>
-            <div className="text-center mt-4">
-              <h1 className="text-2xl font-semibold text-black">
+
+            <div className="text-center py-4">
+              <h1 className="text-3xl font-semibold text-black">
                 {artistData.username}
               </h1>
-              <p className="text-black-500">{artistData.bio}</p>
-              <p className="mt-2 text-black">Rating: {artistData.rating}</p>
+              <p className="text-gray-400 text-lg">{artistData.bio}</p>
+              <p className="mt-2 text-black">
+                {artistData.rating !== 0
+                  ? `Rating: ${artistData.rating}`
+                  : "Rating is currently unavailable"}
+              </p>
             </div>
-          </div>
         </>
       ) : (
-        <p>Loading...</p>
+        <h1>Loading...</h1>
       )}
     </div>
   );

@@ -18,9 +18,10 @@ const Login = () => {
       });
 
       if (response.status === 200) {
-        const { token, user_type } = response.data;
+        const { token, user_type, username } = response.data;
         localStorage.setItem("token", token);
         localStorage.setItem("type", user_type);
+        localStorage.setItem("current_user", username);
         setSnackbarMessage("Login successful");
         setSnackbarOpen(true);
         console.log(response);

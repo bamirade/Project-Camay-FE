@@ -76,7 +76,7 @@ function Header() {
           }}
         >
           <a href="/">
-            <img src="/icon2.png" alt="Logo" className="h-auto w-64" />
+            <img src="/icon2.webp" alt="Logo" className="h-auto w-64" />
           </a>
         </div>
 
