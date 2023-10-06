@@ -2,6 +2,7 @@ import { useState } from "react";
 import Snackbar from "../utils/snackbar";
 import axios from "axios";
 import key from "../api/key";
+import citiesData from "../utils/city.json";
 
 const SignUp = () => {
   const [username, setUsername] = useState<string>("");
@@ -11,9 +12,11 @@ const SignUp = () => {
   const [userType, setUserType] = useState<string>("Buyer");
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [selectedCity, setSelectedCity] = useState<string>("");
 
   const isFormEmpty = () => {
-    return !username || !email || !password || !city;
+    return !username || !email || !password || !selectedCity;
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -57,6 +60,22 @@ const SignUp = () => {
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+    setCity(input);
+
+    const filteredSuggestions = citiesData.cities.filter((suggestion) =>
+      suggestion.toLowerCase().includes(input.toLowerCase())
+    );
+    setSuggestions(filteredSuggestions);
+  };
+
+  const handleSuggestionClick = (selectedCity: string) => {
+    setCity(selectedCity);
+    setSelectedCity(selectedCity);
+    setSuggestions([]);
   };
 
   return (
@@ -129,7 +148,7 @@ const SignUp = () => {
               />
             </div>
 
-            <div className="mb-4">
+            <div className="mb-4 relative">
               <label
                 htmlFor="city"
                 className="block text-sm font-medium text-gray-700"
@@ -140,12 +159,25 @@ const SignUp = () => {
                 id="city"
                 name="city"
                 type="text"
-                autoComplete="address-level2"
+                autoComplete="off"
                 className="block w-full px-4 py-2 border rounded-md focus:ring focus:ring-[#E8D9C2] placeholder-gray-400"
                 placeholder="City"
                 value={city}
-                onChange={(e) => setCity(e.target.value)}
+                onChange={handleInputChange}
               />
+              {suggestions.length > 0 && (
+                <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg shadow-lg">
+                  {suggestions.slice(0, 5).map((suggestion, index) => (
+                    <li
+                      key={index}
+                      className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                      onClick={() => handleSuggestionClick(suggestion)}
+                    >
+                      {suggestion}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             <div className="mb-4">
