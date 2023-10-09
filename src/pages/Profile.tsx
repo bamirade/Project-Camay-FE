@@ -10,6 +10,7 @@ interface UserInfo {
   email: string;
   city: string;
   contact_information: string;
+  id: number;
 }
 
 interface SellerInfo {
@@ -31,37 +32,33 @@ const Profile: React.FC = () => {
   const [sellerInfo, setSellerInfo] = useState<SellerInfo | null>(null);
   const [imagesURL, setImagesURL] = useState<ImagesURL | null>(null);
 
-  useEffect(() => {
+  const fetchData = async () => {
     const type = localStorage.getItem("type");
     const authToken = localStorage.getItem("token");
+    try {
+      const response = await axios.get(`${key.API_URL}/users/info`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
 
-    if (type === "Seller") {
-      setIsSeller(true);
-      axios
-        .get(`${key.API_URL}/users/info`, {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        })
-        .then((response) => {
-          const { user_info, seller_info, image_urls } = response.data;
-          setUserInfo(user_info);
-          setSellerInfo(seller_info);
-          setImagesURL(image_urls);
-        });
-    } else {
-      setIsSeller(false);
-      axios
-        .get(`${key.API_URL}/users/info`, {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        })
-        .then((response) => {
-          const { user_info } = response.data;
-          setUserInfo(user_info);
-        });
+      const { user_info, seller_info, image_urls } = response.data;
+      setUserInfo(user_info);
+
+      if (type === "Seller") {
+        setIsSeller(true);
+        setSellerInfo(seller_info);
+        setImagesURL(image_urls);
+      } else {
+        setIsSeller(false);
+      }
+    } catch (error) {
+      console.error("An error occurred while fetching data:", error);
     }
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   return (
@@ -69,9 +66,13 @@ const Profile: React.FC = () => {
       <Header />
       <div className="container mx-auto p-4">
         <h1 className="text-2xl font-semibold">Profile</h1>
-        <UserProfile userInfo={userInfo} />
+        {userInfo && <UserProfile userInfo={userInfo} />}
         {isSeller && (
-          <SellerProfile sellerInfo={sellerInfo} imagesURL={imagesURL} />
+          <SellerProfile
+            sellerInfo={sellerInfo}
+            imagesURL={imagesURL}
+            fetchData={fetchData}
+          />
         )}
       </div>
     </>
