@@ -31,6 +31,8 @@ const SellerProfile: React.FC<SellerProfileProps> = ({
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null);
   const [newImage, setNewImage] = useState<File | null>(null);
+  const [isEditingBio, setIsEditingBio] = useState<boolean>(false);
+  const [bio, setBio] = useState<string>("");
 
   const handleMouseEnter = (imageKey: string) => {
     setIsHovered(true);
@@ -45,8 +47,11 @@ const SellerProfile: React.FC<SellerProfileProps> = ({
   const handleEditClick = () => {
     setSelectedImage(hoveredImage);
     setIsEditing(true);
-    console.log(selectedImage?.slice(0, -5));
     setNewImage(null);
+  };
+
+  const handleBioEditClick = () => {
+    setIsEditingBio(true);
   };
 
   const handleDeleteClick = () => {
@@ -60,6 +65,10 @@ const SellerProfile: React.FC<SellerProfileProps> = ({
 
   const handleCloseEdit = () => {
     setIsEditing(false);
+  };
+
+  const handleCloseBioEdit = () => {
+    setIsEditingBio(false);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -128,6 +137,35 @@ const SellerProfile: React.FC<SellerProfileProps> = ({
     }
   };
 
+  const handleBioEdit = async () => {
+    const authToken = localStorage.getItem("token");
+    const userID = localStorage.getItem("user_id");
+    try {
+      await axios.patch(
+        `${key.API_URL}/artists/update_bio/${userID}`,
+        { user: { seller: { bio } } },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+      setSnackbarMessage("Replaced successfully");
+      setSnackbarOpen(true);
+      setIsEditingBio(false);
+      fetchData();
+    } catch (error) {
+      setSnackbarOpen(true);
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data || error.message;
+        console.log(errorMessage);
+        setSnackbarMessage(errorMessage.error.toString());
+      } else {
+        console.error(`Unexpected Error:`, error);
+      }
+    }
+  };
+
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
@@ -183,7 +221,7 @@ const SellerProfile: React.FC<SellerProfileProps> = ({
             <img
               src={imagesURL.cover_url || "/default_cover.webp"}
               alt="Seller Cover Photo"
-              className="w-full h-full object-cover"
+              className="w-full h-full max-h-[66.765vh] min-h-[66.765vh] object-cover"
             />
             {isHovered && hoveredImage === "cover_url" && (
               <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75">
@@ -207,13 +245,49 @@ const SellerProfile: React.FC<SellerProfileProps> = ({
         </div>
       </div>
 
-      <div className="p-6">
-        <h3 className="text-xl font-semibold mb-2">Seller Bio</h3>
-        <p className="text-gray-700">
-          {sellerInfo.bio || "Bio is currently empty"}
-        </p>
+      <div className="p-6 border-b">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-semibold">Seller Bio</h3>
+          {!isEditingBio ? (
+            <button
+              className="px-4 py-2 text-white bg-[#D8C1A9] rounded-md hover:bg-[#E8D9C2] focus:outline-none focus:ring focus:ring-blue-400"
+              onClick={handleBioEditClick}
+            >
+              Edit
+            </button>
+          ) : (
+            <div className="flex space-x-4">
+              <button
+                className="px-4 py-2 text-white bg-[#D8C1A9] rounded-md hover:bg-[#E8D9C2] focus:outline-none focus:ring focus:ring-blue-400"
+                onClick={handleBioEdit}
+              >
+                Save
+              </button>
+              <button
+                className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring focus:ring-blue-400 ring-1 ring-inset ring-gray-300"
+                onClick={handleCloseBioEdit}
+              >
+                Cancel
+              </button>
+            </div>
+          )}
+        </div>
+        {!isEditingBio ? (
+          <p className="text-gray-700 text-base">
+            {sellerInfo.bio || "Bio is currently empty"}
+          </p>
+        ) : (
+          <input
+            type="text"
+            className="block w-full h-full shadow-sm sm:text-sm focus:ring-blue-400 focus:border-blue-400 border-gray-300 rounded-md hover:bg-gray-100"
+            style={{ fontSize: "1rem" }}
+            defaultValue={sellerInfo.bio || "Bio is currently empty"}
+            onChange={(e) => setBio(e.target.value)}
+          />
+        )}
       </div>
 
+      <h3 className="text-xl font-semibold p-6">Works</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 p-6">
         <div>
           <p className="text-gray-600 mb-2">Works 1</p>
@@ -344,7 +418,7 @@ const SellerProfile: React.FC<SellerProfileProps> = ({
           </div>
         </div>
       </div>
-      {!isDeleting && (
+      {isDeleting && (
         <div
           className="relative z-10"
           aria-labelledby="modal-title"
@@ -389,7 +463,7 @@ const SellerProfile: React.FC<SellerProfileProps> = ({
                               selectedImage.slice(6, -4)
                             : selectedImage.charAt(0).toUpperCase() +
                               selectedImage.slice(1, -4)
-                          : "selectedImage"}{" "}
+                          : "selectedImage"}
                         ?
                       </h3>
                       <div className="mt-2">
@@ -478,7 +552,7 @@ const SellerProfile: React.FC<SellerProfileProps> = ({
                               selectedImage.slice(6, -4)
                             : selectedImage.charAt(0).toUpperCase() +
                               selectedImage.slice(1, -4)
-                          : "selectedImage"}{" "}
+                          : "selectedImage"}
                         ?
                       </h3>
                       <div className="mt-2">
@@ -494,7 +568,14 @@ const SellerProfile: React.FC<SellerProfileProps> = ({
                               : selectedImage.charAt(0).toUpperCase() +
                                 selectedImage.slice(1, -4)
                             : "selectedImage"}
-                          ? The image will be replaced from your portfolio.
+                          ? The image will be replaced from your portfolio.{" "}
+                          {selectedImage
+                            ? selectedImage.charAt(0).toUpperCase() +
+                                selectedImage.slice(1, -4) ===
+                              "Cover"
+                              ? "(Recommended Cover Ratio: 16:9)"
+                              : null
+                            : null}
                         </p>
                       </div>
                     </div>
