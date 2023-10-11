@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import UserProfile from "../components/UserProfile";
 import SellerProfile from "../components/SellerProfile";
 import key from "../api/key";
+import Snackbar from "../utils/snackbar";
 
 interface UserInfo {
   username: string;
@@ -31,6 +32,8 @@ const Profile: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [sellerInfo, setSellerInfo] = useState<SellerInfo | null>(null);
   const [imagesURL, setImagesURL] = useState<ImagesURL | null>(null);
+  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
+  const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null);
 
   const fetchData = async () => {
     const type = localStorage.getItem("type");
@@ -53,7 +56,14 @@ const Profile: React.FC = () => {
         setIsSeller(false);
       }
     } catch (error) {
-      console.error("An error occurred while fetching data:", error);
+      setSnackbarOpen(true);
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data || error.message;
+        console.log(errorMessage);
+        setSnackbarMessage(errorMessage.error.toString());
+      } else {
+        console.error(`Unexpected Error:`, error);
+      }
     }
   };
 
@@ -61,12 +71,16 @@ const Profile: React.FC = () => {
     fetchData();
   }, []);
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
   return (
     <>
       <Header />
       <div className="container mx-auto p-4">
         <h1 className="text-2xl font-semibold">Profile</h1>
-        {userInfo && <UserProfile userInfo={userInfo} />}
+        {userInfo && <UserProfile userInfo={userInfo} fetchData={fetchData} />}
         {isSeller && (
           <SellerProfile
             sellerInfo={sellerInfo}
@@ -74,6 +88,12 @@ const Profile: React.FC = () => {
             fetchData={fetchData}
           />
         )}
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={3000}
+          onClose={handleSnackbarClose}
+          message={snackbarMessage}
+        />
       </div>
     </>
   );

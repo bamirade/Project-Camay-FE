@@ -145,7 +145,9 @@ function Header() {
             </a>
           </div>
         </div>
-        <div className="flex justify-end text-xs mr-2">{PageIndicator()}</div>
+        <div className="flex justify-end text-xs mr-2 lg:show mb:hidden">
+          <PageIndicator />
+        </div>
       </header>
       <Snackbar
         open={snackbarOpen}

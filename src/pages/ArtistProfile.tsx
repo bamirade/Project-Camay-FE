@@ -128,7 +128,14 @@ const ArtistProfile: React.FC = () => {
           </div>
         </>
       ) : (
-        <h1>Loading...</h1>
+        <>
+          <Header />
+          <div className="flex flex-col items-center justify-center h-screen">
+            <div className="animate-spin rounded-full border-t-4 border-blue-500 border-solid h-12 w-12 mb-2"></div>
+
+            <h1 className="text-gray-700 text-lg">Loading...</h1>
+          </div>
+        </>
       )}
     </div>
   );
