@@ -7,6 +7,11 @@ import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";
+import Reconfirm from "./pages/Reconfirm";
+import Cart from "./pages/Cart";
+import ArtistProfile from "./pages/ArtistProfile";
+import ArtistList from "./pages/ArtistList";
+import ProductsList from "./pages/ProductsList";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -31,11 +36,16 @@ function App() {
       ) : (
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/artists/:username" element={<ArtistProfile />} />
+          <Route path="/artists/" element={<ArtistList />} />
+          <Route path="/products/" element={<ProductsList />} />
 
           {!isLoggedIn && (
             <>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/reconfirm" element={<Reconfirm />} />
             </>
           )}
           {isLoggedIn && (

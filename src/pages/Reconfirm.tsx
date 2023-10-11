@@ -1,33 +1,27 @@
-import React, { useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import Snackbar from "../utils/snackbar";
+import axios from "axios";
 import key from "../api/key";
 
-const Login = () => {
+const Reconfirm = () => {
   const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response = await axios.post(`${key.API_URL}/login`, {
+      const response = await axios.post(`${key.API_URL}/reconfirm`, {
         email,
-        password,
       });
-
       if (response.status === 200) {
-        const { token, user_type, username, id } = response.data;
-        localStorage.setItem("token", token);
-        localStorage.setItem("type", user_type);
-        localStorage.setItem("current_user", username);
-        localStorage.setItem("user_id", id);
-        setSnackbarMessage("Login successful");
+        setSnackbarMessage(
+          "Confirmation email resent. Please check your email."
+        );
         setSnackbarOpen(true);
         console.log(response);
         setTimeout(() => {
-          window.location.href = "/";
+          window.location.href = "/login";
         }, 2000);
       }
     } catch (error) {
@@ -55,7 +49,7 @@ const Login = () => {
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="max-w-md w-full bg-white bg-opacity-90 rounded-lg shadow-md p-8">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-4">
-            Log in to your account
+            Resend Email Confirmation
           </h2>
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="mb-4">
@@ -78,57 +72,16 @@ const Login = () => {
               />
             </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="block w-full px-4 py-2 border rounded-md focus:ring focus:ring-indigo-500 placeholder-gray-400"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="remember"
-                  className="text-indigo-600 border-gray-300 rounded focus:ring focus:ring-indigo-500"
-                />
-                <label
-                  htmlFor="remember"
-                  className="ml-2 text-sm text-gray-600"
-                >
-                  Remember me
-                </label>
-              </div>
-              <div className="text-sm">
-                <a href="/reconfirm" className="text-[#D8C1A9] hover:underline">
-                  Resend Email Confirmation?
-                </a>
-              </div>
-            </div>
-
             <button
               type="submit"
               className="w-full py-2 px-4 bg-[#D8C1A9] hover:bg-[#E8D9C2] text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Log In
+              Resend Confirmation Email
             </button>
             <p className="text-center text-gray-500 text-sm">
-              Don't have an account?{" "}
-              <a href="/signup" className="text-[#D8C1A9] hover:underline">
-                Sign Up
+              Already have an account?{" "}
+              <a href="/login" className="text-[#D8C1A9] hover:underline">
+                Log in
               </a>
             </p>
           </form>
@@ -144,4 +97,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Reconfirm;
