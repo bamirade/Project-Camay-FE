@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import key from "../api/key";
 import Header from "../components/Header";
+import ColorThief from "../utils/colorthief";
 
 interface ArtistData {
   username: string;
@@ -15,6 +16,8 @@ interface ArtistData {
 const ArtistProfile: React.FC = () => {
   const { username } = useParams<{ username: string }>();
   const [artistData, setArtistData] = useState<ArtistData | null>(null);
+  const [imageColor, setImageColor] = useState([0, 0, 0]);
+  const [selectedTab, setSelectedTab] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,18 +40,51 @@ const ArtistProfile: React.FC = () => {
     fetchData();
   }, [username, navigate]);
 
+  useEffect(() => {
+    const getColorFromImage = async () => {
+      const imageElement = new Image();
+      const coverUrl = artistData?.cover_url || "default_cover_image.webp";
+
+      imageElement.src = coverUrl;
+
+      imageElement.onload = async () => {
+        const color = await ColorThief.getColor(imageElement.src);
+        setImageColor(color);
+      };
+    };
+
+    if (artistData) {
+      getColorFromImage();
+    }
+  }, [artistData]);
+
+  const handleTabChangeOne = () => {
+    setSelectedTab(false);
+  };
+
+  const handleTabChangeTwo = () => {
+    setSelectedTab(true);
+  };
+
   return (
     <div className="mx-auto">
       {artistData ? (
         <>
           <Header />
-          <div className="relative h-80">
+          <div className="relative h-80 mx-auto">
             <img
               src={artistData.cover_url || "/default_cover.webp"}
               alt="Profile Cover"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover max-w-full md:max-w-[90vw] mx-auto"
             />
-            <div className="absolute inset-0 bg-black opacity-40"></div>
+            <div
+              className={`absolute inset-0 z-[-1]`}
+              style={{
+                background: `linear-gradient(to bottom, rgba(${imageColor.join(
+                  ","
+                )}, 0.4) 0%, rgba(${imageColor.join(",")}, 0) 100%)`,
+              }}
+            ></div>
           </div>
 
           <div className="relative flex justify-center -mt-16 h-80">
@@ -71,6 +107,24 @@ const ArtistProfile: React.FC = () => {
                 ? `Rating: ${artistData.rating}`
                 : "Rating is currently unavailable"}
             </p>
+          </div>
+          <div className="mt-4 text-center">
+            <button
+              className={`text-black font-semibold py-2 px-4 rounded ${
+                !selectedTab ? "underline" : ""
+              }`}
+              onClick={() => handleTabChangeOne()}
+            >
+              Works
+            </button>
+            <button
+              className={`text-black font-semibold py-2 px-4 rounded ml-2 ${
+                selectedTab ? "underline" : ""
+              }`}
+              onClick={() => handleTabChangeTwo()}
+            >
+              Commission Me
+            </button>
           </div>
         </>
       ) : (
