@@ -4,6 +4,8 @@ import axios from "axios";
 import key from "../api/key";
 import Header from "../components/Header";
 import ColorThief from "../utils/colorthief";
+import WorksPortfolio from "../components/WorksPortfolio";
+import Footer from "../components/Footer";
 
 interface ArtistData {
   username: string;
@@ -11,6 +13,10 @@ interface ArtistData {
   rating: number;
   avatar_url: string | null;
   cover_url: string | null;
+  works1_url: string;
+  works2_url: string;
+  works3_url: string;
+  works4_url: string;
 }
 
 const ArtistProfile: React.FC = () => {
@@ -25,7 +31,6 @@ const ArtistProfile: React.FC = () => {
       try {
         const response = await axios.get(`${key.API_URL}/artists/${username}`);
         setArtistData(response.data);
-        console.log(response.data);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           const errorMessage = error.response?.data || error.message;
@@ -60,6 +65,14 @@ const ArtistProfile: React.FC = () => {
 
   const handleTabChangeOne = () => {
     setSelectedTab(false);
+
+    const targetElement = document.getElementById("works-section");
+
+    if (targetElement) {
+      setTimeout(() => {
+        targetElement.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
   };
 
   const handleTabChangeTwo = () => {
@@ -110,7 +123,7 @@ const ArtistProfile: React.FC = () => {
           </div>
           <div className="mt-4 text-center">
             <button
-              className={`text-black font-semibold py-2 px-4 rounded ${
+              className={`text-black font-semibold py-2 px-4 rounded text-xl ${
                 !selectedTab ? "underline" : ""
               }`}
               onClick={() => handleTabChangeOne()}
@@ -118,23 +131,31 @@ const ArtistProfile: React.FC = () => {
               Works
             </button>
             <button
-              className={`text-black font-semibold py-2 px-4 rounded ml-2 ${
+              className={`text-black font-semibold py-2 px-4 rounded ml-2 text-xl ${
                 selectedTab ? "underline" : ""
               }`}
+              id="works-section"
               onClick={() => handleTabChangeTwo()}
             >
               Commission Me
             </button>
           </div>
+          {!selectedTab ? (
+            <WorksPortfolio artistData={artistData} />
+          ) : (
+            <p>commisions</p>
+          )}
+          <Footer />
         </>
       ) : (
         <>
           <Header />
           <div className="flex flex-col items-center justify-center h-screen">
-            <div className="animate-spin rounded-full border-t-4 border-blue-500 border-solid h-12 w-12 mb-2"></div>
+            <div className="animate-spin rounded-full border-t-4 border-[#D8C1A9] border-solid h-12 w-12 mb-2"></div>
 
             <h1 className="text-gray-700 text-lg">Loading...</h1>
           </div>
+          <Footer />
         </>
       )}
     </div>

@@ -77,24 +77,38 @@ const Profile: React.FC = () => {
 
   return (
     <>
-      <Header />
-      <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-semibold">Profile</h1>
-        {userInfo && <UserProfile userInfo={userInfo} fetchData={fetchData} />}
-        {isSeller && (
-          <SellerProfile
-            sellerInfo={sellerInfo}
-            imagesURL={imagesURL}
-            fetchData={fetchData}
-          />
-        )}
-        <Snackbar
-          open={snackbarOpen}
-          autoHideDuration={3000}
-          onClose={handleSnackbarClose}
-          message={snackbarMessage}
-        />
-      </div>
+      {userInfo ? (
+        <>
+          <Header />
+          <div className="container mx-auto p-4">
+            <h1 className="text-2xl font-semibold">Profile</h1>
+            {userInfo && (
+              <UserProfile userInfo={userInfo} fetchData={fetchData} />
+            )}
+            {isSeller && (
+              <SellerProfile
+                sellerInfo={sellerInfo}
+                imagesURL={imagesURL}
+                fetchData={fetchData}
+              />
+            )}
+          </div>
+        </>
+      ) : (
+        <>
+          <Header />
+          <div className="flex flex-col items-center justify-center h-screen">
+            <div className="animate-spin rounded-full border-t-4 border-[#D8C1A9] border-solid h-12 w-12 mb-2"></div>
+            <h1 className="text-gray-700 text-lg">Loading...</h1>
+          </div>
+        </>
+      )}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        message={snackbarMessage}
+      />
     </>
   );
 };

@@ -214,7 +214,6 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, fetchData }) => {
                   autoComplete="off"
                   className="font-semibold block w-full h-full shadow-sm sm:text-sm focus:ring-blue-400 focus:border-blue-400 border-gray-300 rounded-md hover:bg-gray-100"
                   style={{ fontSize: "1rem" }}
-                  defaultValue={userInfo.city}
                   value={city}
                   placeholder="City"
                   onChange={handleInputChange}
