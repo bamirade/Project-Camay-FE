@@ -17,7 +17,7 @@ const WorksPortfolio: React.FC<{ artistData: ArtistData }> = ({
           <img
             src={artistData.works1_url}
             alt="Work 1"
-            className="w-full h-auto object-cover"
+            className="w-full h-auto object-cover p-1 border-double border-2"
           />
         </div>
 
@@ -25,7 +25,7 @@ const WorksPortfolio: React.FC<{ artistData: ArtistData }> = ({
           <img
             src={artistData.works2_url}
             alt="Work 2"
-            className="w-full h-auto object-cover"
+            className="w-full h-auto object-cover p-1 border-double border-2"
           />
         </div>
 
@@ -33,7 +33,7 @@ const WorksPortfolio: React.FC<{ artistData: ArtistData }> = ({
           <img
             src={artistData.works3_url}
             alt="Work 3"
-            className="w-full h-auto object-cover"
+            className="w-full h-auto object-cover p-1 border-double border-2"
           />
         </div>
 
@@ -41,7 +41,7 @@ const WorksPortfolio: React.FC<{ artistData: ArtistData }> = ({
           <img
             src={artistData.works4_url}
             alt="Work 4"
-            className="w-full h-auto object-cover"
+            className="w-full h-auto object-cover p-1 border-double border-2"
           />
         </div>
       </div>

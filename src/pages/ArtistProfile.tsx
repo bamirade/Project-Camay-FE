@@ -95,7 +95,7 @@ const ArtistProfile: React.FC = () => {
               style={{
                 background: `linear-gradient(to bottom, rgba(${imageColor.join(
                   ","
-                )}, 0.4) 0%, rgba(${imageColor.join(",")}, 0) 100%)`,
+                ) || "216,193,169"}, 0.4) 0%, rgba(${imageColor.join(",")}, 0) 100%)`,
               }}
             ></div>
           </div>

@@ -5,6 +5,7 @@ import UserProfile from "../components/UserProfile";
 import SellerProfile from "../components/SellerProfile";
 import key from "../api/key";
 import Snackbar from "../utils/snackbar";
+import CommissionType from "../components/CommissionType";
 
 interface UserInfo {
   username: string;
@@ -86,11 +87,14 @@ const Profile: React.FC = () => {
               <UserProfile userInfo={userInfo} fetchData={fetchData} />
             )}
             {isSeller && (
-              <SellerProfile
-                sellerInfo={sellerInfo}
-                imagesURL={imagesURL}
-                fetchData={fetchData}
-              />
+              <>
+                <SellerProfile
+                  sellerInfo={sellerInfo}
+                  imagesURL={imagesURL}
+                  fetchData={fetchData}
+                />
+                <CommissionType />
+              </>
             )}
           </div>
         </>

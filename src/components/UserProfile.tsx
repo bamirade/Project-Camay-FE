@@ -40,6 +40,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, fetchData }) => {
     setCity(userInfo.city);
     setEmail(userInfo.email);
     setContactInformation(userInfo.contact_information);
+    setSelectedCity(userInfo.city)
   };
 
   const handlePasswordEditClick = () => {
@@ -75,7 +76,6 @@ const UserProfile: React.FC<UserProfileProps> = ({ userInfo, fetchData }) => {
       setSnackbarMessage("Updated successfully");
       setSnackbarOpen(true);
       setIsEditingInfo(false);
-      setSelectedCity("");
       fetchData();
     } catch (error) {
       setSnackbarOpen(true);

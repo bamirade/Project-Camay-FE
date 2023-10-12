@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const LandingPage = () => {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -43,13 +44,23 @@ const LandingPage = () => {
               We're currently under development and working hard to bring you an
               amazing platform to showcase and discover artisan creations.
             </p>
-            <p className="text-gray-600">
+            <p className="text-gray-600 mb-4">
               Our mission is to support local artisans, enlarge their network by
               city, and provide a platform for their incredible creations.
+            </p>
+            <p className="text-gray-600">
+              contact us:{" "}
+              <a
+                href="mailto:projectcamay@gmail.com"
+                className="underline font-semibold"
+              >
+                projectcamay@gmail.com
+              </a>{" "}
             </p>
           </div>
         )}
       </div>
+      <Footer />
     </>
   );
 };
