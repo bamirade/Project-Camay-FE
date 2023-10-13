@@ -21,6 +21,7 @@ interface ArtistData {
 }
 
 const ArtistProfile: React.FC = () => {
+  const [isSeller, setIsSelller] = useState<boolean>(false);
   const { username } = useParams<{ username: string }>();
   const [artistData, setArtistData] = useState<ArtistData | null>(null);
   const [imageColor, setImageColor] = useState([0, 0, 0]);
@@ -43,13 +44,23 @@ const ArtistProfile: React.FC = () => {
       }
     };
 
+    const determineSeller = () => {
+      const type = localStorage.getItem("type");
+      if (type === "Seller") {
+        setIsSelller(true);
+      } else {
+        setIsSelller(false);
+      }
+    };
+
     fetchData();
+    determineSeller();
   }, [username, navigate]);
 
   useEffect(() => {
     const getColorFromImage = async () => {
       const imageElement = new Image();
-      const coverUrl = artistData?.cover_url || "default_cover_image.webp";
+      const coverUrl = artistData?.cover_url || "/default_cover.webp";
 
       imageElement.src = coverUrl;
 
@@ -138,15 +149,17 @@ const ArtistProfile: React.FC = () => {
             >
               Works
             </button>
-            <button
-              className={`text-black font-semibold py-2 px-4 rounded ml-2 text-xl ${
-                selectedTab ? "underline" : ""
-              }`}
-              id="works-section"
-              onClick={() => handleTabChangeTwo()}
-            >
-              Commission Me
-            </button>
+            {!isSeller && (
+              <button
+                className={`text-black font-semibold py-2 px-4 rounded ml-2 text-xl ${
+                  selectedTab ? "underline" : ""
+                }`}
+                id="works-section"
+                onClick={() => handleTabChangeTwo()}
+              >
+                Commission Me
+              </button>
+            )}
           </div>
           {!selectedTab ? (
             <WorksPortfolio artistData={artistData} />

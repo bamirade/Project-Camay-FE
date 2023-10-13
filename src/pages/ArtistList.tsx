@@ -41,40 +41,48 @@ const ArtistList = () => {
   return (
     <>
       <Header />
-      <div className="p-4 min-h-[82.5vh]">
-        <h2 className="text-3xl font-semibold mb-4">Artist List</h2>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-          {artists.map((artist, index) => (
-            <li
-              key={index}
-              className="bg-white rounded-lg shadow-md p-4 hover:cursor-pointer hover:bg-gray-200"
-              onClick={() => navigateToArtistPage(artist.username)}
-            >
-              <div className="flex flex-col sm:flex-row items-center">
-                <div className="lg:w-1/2 w-32 h-32 mb-4 sm:mb-0 md:w-48 md:h-48">
-                  <img
-                    src={artist.avatar_url || "/default_avatar.webp"}
-                    alt={`Avatar of ${artist.username}`}
-                    className="lg:w-auto w-full h-full object-cover rounded-full"
-                  />
+      {artists ? (
+        <div className="p-4 min-h-[82.5vh]">
+          <h2 className="text-3xl font-semibold mb-4">Artist List</h2>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+            {artists.map((artist, index) => (
+              <li
+                key={index}
+                className="bg-white rounded-lg shadow-md p-4 hover:cursor-pointer hover:bg-gray-200"
+                onClick={() => navigateToArtistPage(artist.username)}
+              >
+                <div className="flex flex-col sm:flex-row items-center">
+                  <div className="lg:w-1/2 w-32 h-32 mb-4 sm:mb-0 md:w-48 md:h-48">
+                    <img
+                      src={artist.avatar_url || "/default_avatar.webp"}
+                      alt={`Avatar of ${artist.username}`}
+                      className="lg:w-auto w-full h-full object-cover rounded-full"
+                    />
+                  </div>
+                  <div className="ml-4">
+                    <h3 className="text-xl font-semibold mb-2">
+                      {artist.username}
+                    </h3>
+                    <p className="text-gray-600 mb-2">City: {artist.city}</p>
+                    <p className="text-gray-600">
+                      Rating:{" "}
+                      {artist.rating !== 0
+                        ? artist.rating
+                        : "currently unavailable"}
+                    </p>
+                  </div>
                 </div>
-                <div className="ml-4">
-                  <h3 className="text-xl font-semibold mb-2">
-                    {artist.username}
-                  </h3>
-                  <p className="text-gray-600 mb-2">City: {artist.city}</p>
-                  <p className="text-gray-600">
-                    Rating:{" "}
-                    {artist.rating !== 0
-                      ? artist.rating
-                      : "currently unavailable"}
-                  </p>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center h-screen">
+          <div className="animate-spin rounded-full border-t-4 border-[#D8C1A9] border-solid h-12 w-12 mb-2"></div>
+
+          <h1 className="text-gray-700 text-lg">Loading...</h1>
+        </div>
+      )}
       <Footer />
     </>
   );

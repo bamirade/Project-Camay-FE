@@ -82,7 +82,7 @@ const Profile: React.FC = () => {
       {userInfo ? (
         <>
           <Header />
-          <div className="container mx-auto p-4">
+          <div className="container mx-auto p-4 min-h-[82.5vh]">
             <h1 className="text-2xl font-semibold">Profile</h1>
             {userInfo && (
               <UserProfile userInfo={userInfo} fetchData={fetchData} />

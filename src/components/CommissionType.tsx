@@ -60,9 +60,6 @@ const CommissionType = () => {
 
   const handleSave = async (editedCommission: CommissionTypeInfo) => {
     const authToken = localStorage.getItem("token");
-    console.log(
-      `${key.API_URL}/commission_types/my_commissions/${editedCommission.id}`
-    );
     try {
       await axios.patch(
         `${key.API_URL}/commission_types/my_commissions/${editedCommission.id}`,
