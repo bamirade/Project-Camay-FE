@@ -15,7 +15,7 @@ const WorksPortfolio: React.FC<{ artistData: ArtistData }> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 auto-flow-dense gap-4 items-center">
         <div className="relative group">
           <img
-            src={artistData.works1_url}
+            src={artistData.works1_url || "/default_works.webp"}
             alt="Work 1"
             className="w-full h-auto object-cover p-1 border-double border-2"
           />
@@ -23,7 +23,7 @@ const WorksPortfolio: React.FC<{ artistData: ArtistData }> = ({
 
         <div className="relative group">
           <img
-            src={artistData.works2_url}
+            src={artistData.works2_url || "/default_works.webp"}
             alt="Work 2"
             className="w-full h-auto object-cover p-1 border-double border-2"
           />
@@ -31,7 +31,7 @@ const WorksPortfolio: React.FC<{ artistData: ArtistData }> = ({
 
         <div className="relative group">
           <img
-            src={artistData.works3_url}
+            src={artistData.works3_url || "/default_works.webp"}
             alt="Work 3"
             className="w-full h-auto object-cover p-1 border-double border-2"
           />
@@ -39,7 +39,7 @@ const WorksPortfolio: React.FC<{ artistData: ArtistData }> = ({
 
         <div className="relative group">
           <img
-            src={artistData.works4_url}
+            src={artistData.works4_url || "/default_works.webp"}
             alt="Work 4"
             className="w-full h-auto object-cover p-1 border-double border-2"
           />

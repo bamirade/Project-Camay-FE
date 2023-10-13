@@ -20,6 +20,7 @@ const CommissionType = () => {
   const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null);
   const [selected, setSelected] = useState<number>();
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const [isAdding, setIsAdding] = useState<boolean>(false);
 
   const fetchCommissionTypes = async () => {
     const authToken = localStorage.getItem("token");
@@ -124,12 +125,51 @@ const CommissionType = () => {
     setSnackbarOpen(false);
   };
 
+  const handleAddingClick = () => {
+    setIsAdding(true);
+  };
+
+  const handleCloseAdding = () => {
+    setIsAdding(false);
+  };
+
+  const handleAdding = async () => {
+    const authToken = localStorage.getItem("token");
+    try {
+      await axios.post(
+        `${key.API_URL}/commission_types/create`,
+        {
+          commission_type: {
+            title: commissionTitle,
+            price: commissionPrice,
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+      setSnackbarMessage("Commission type created");
+      setSnackbarOpen(true);
+      handleCloseAdding();
+      fetchCommissionTypes();
+    } catch (error) {
+      setSnackbarOpen(true);
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data || error.message;
+        console.log(errorMessage);
+        setSnackbarMessage(errorMessage.error.toString());
+      } else {
+        console.error(`Unexpected Error:`, error);
+      }
+    }
+  };
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 mb-10">
-      <h2 className="text-3xl font-semibold border-b border-gray-300 pb-4">
+      <h2 className="text-3xl font-semibold text-gray-800 border-b border-gray-300">
         Commission Types
       </h2>
-
       <ul>
         {commissionTypes && commissionTypes.length > 0 ? (
           commissionTypes.map((commission, index) => (
@@ -170,7 +210,7 @@ const CommissionType = () => {
                   <div className="flex space-x-4 mt-2 lg:mt-0">
                     <button
                       onClick={() => handleSave(commission)}
-                      className="text-green-600"
+                      className="px-4 py-2 text-white bg-[#D8C1A9] rounded-md hover:bg-[#E8D9C2] focus:outline-none focus:ring focus:ring-blue-400"
                     >
                       Save
                     </button>
@@ -195,13 +235,13 @@ const CommissionType = () => {
                   <div className="lg:flex items-center w-full lg:w-1/4 justify-between mt-2 lg:mt-0 flex justify-around">
                     <button
                       onClick={() => handleEdit(index, commission)}
-                      className="text-black hover:text-gray-200"
+                      className="px-4 py-2 text-white bg-[#D8C1A9] rounded-md hover:bg-[#E8D9C2] focus:outline-none focus:ring focus:ring-blue-400"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => handleDeleteClick(commission)}
-                      className="text-red-500 hover:text-red-700"
+                      className="px-4 py-2 text-white bg-red-600 rounded-md hover:bg-red-400 focus:outline-none focus:ring focus:ring-blue-400"
                     >
                       Delete
                     </button>
@@ -216,6 +256,55 @@ const CommissionType = () => {
           </div>
         )}
       </ul>
+      {isAdding && (
+        <div className="lg:w-full flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-4 lg:justify-between mt-4">
+          <label htmlFor="title" className="text-gray-600 font-semibold">
+            Title:
+          </label>
+          <input
+            id="title"
+            name="title"
+            type="text"
+            onChange={(e) => setCommissionTitle(e.target.value)}
+            className="border rounded p-2 lg:w-1/2"
+          />
+          <label htmlFor="price" className="text-gray-600 font-semibold">
+            Price:
+          </label>
+          <input
+            id="price"
+            name="price"
+            type="number"
+            className="border rounded p-2 lg:w-1/4"
+            onChange={(e) => setCommissionPrice(e.target.value)}
+          />
+        </div>
+      )}
+      {!isAdding ? (
+        <div className="flex justify-center w-full mt-4">
+          <button
+            className="px-4 py-2 text-white bg-[#D8C1A9] rounded-md hover:bg-[#E8D9C2] focus:outline-none focus:ring focus:ring-blue-400"
+            onClick={handleAddingClick}
+          >
+            New Commission
+          </button>
+        </div>
+      ) : (
+        <div className="flex space-x-4 justify-center mt-4">
+          <button
+            className="px-4 py-2 text-white bg-[#D8C1A9] rounded-md hover:bg-[#E8D9C2] focus:outline-none focus:ring focus:ring-blue-400"
+            onClick={handleAdding}
+          >
+            Save
+          </button>
+          <button
+            className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring focus:ring-blue-400 ring-1 ring-inset ring-gray-300"
+            onClick={handleCloseAdding}
+          >
+            Cancel
+          </button>
+        </div>
+      )}
 
       {isDeleting && (
         <div

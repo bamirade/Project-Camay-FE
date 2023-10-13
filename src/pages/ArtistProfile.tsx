@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import ColorThief from "../utils/colorthief";
 import WorksPortfolio from "../components/WorksPortfolio";
 import Footer from "../components/Footer";
+import Commission from "../components/Commission";
 
 interface ArtistData {
   username: string;
@@ -77,6 +78,13 @@ const ArtistProfile: React.FC = () => {
 
   const handleTabChangeTwo = () => {
     setSelectedTab(true);
+    const targetElement = document.getElementById("works-section");
+
+    if (targetElement) {
+      setTimeout(() => {
+        targetElement.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
   };
 
   return (
@@ -93,9 +101,9 @@ const ArtistProfile: React.FC = () => {
             <div
               className={`absolute inset-0 z-[-1]`}
               style={{
-                background: `linear-gradient(to bottom, rgba(${imageColor.join(
-                  ","
-                ) || "216,193,169"}, 0.4) 0%, rgba(${imageColor.join(",")}, 0) 100%)`,
+                background: `linear-gradient(to bottom, rgba(${
+                  imageColor.join(",") || "216,193,169"
+                }, 0.4) 0%, rgba(${imageColor.join(",")}, 0) 100%)`,
               }}
             ></div>
           </div>
@@ -143,7 +151,7 @@ const ArtistProfile: React.FC = () => {
           {!selectedTab ? (
             <WorksPortfolio artistData={artistData} />
           ) : (
-            <p>commisions</p>
+            <Commission />
           )}
           <Footer />
         </>

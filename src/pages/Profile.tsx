@@ -6,6 +6,7 @@ import SellerProfile from "../components/SellerProfile";
 import key from "../api/key";
 import Snackbar from "../utils/snackbar";
 import CommissionType from "../components/CommissionType";
+import Footer from "../components/Footer";
 
 interface UserInfo {
   username: string;
@@ -97,6 +98,7 @@ const Profile: React.FC = () => {
               </>
             )}
           </div>
+          <Footer />
         </>
       ) : (
         <>
@@ -105,6 +107,7 @@ const Profile: React.FC = () => {
             <div className="animate-spin rounded-full border-t-4 border-[#D8C1A9] border-solid h-12 w-12 mb-2"></div>
             <h1 className="text-gray-700 text-lg">Loading...</h1>
           </div>
+          <Footer />
         </>
       )}
       <Snackbar
