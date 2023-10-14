@@ -1,10 +1,22 @@
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 export const PageIndicator = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const location = useLocation();
   const pathSegments = location.pathname
     .split("/")
     .filter((segment) => segment);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
 
   if (pathSegments[0] === "artists" || pathSegments[0] === "products") {
     return pathSegments.map((segment, index) => {
@@ -43,12 +55,20 @@ export const PageIndicator = () => {
         >
           Artists
         </a>
-        <a
+        {/* <a
           href="/products"
           className="text-black hover:text-gray-600 transition duration-300 font-semibold ml-3"
         >
           Products
-        </a>
+        </a> */}
+        {isLoggedIn && (
+          <a
+            href="/commissions"
+            className="text-black hover:text-gray-600 transition duration-300 font-semibold ml-3"
+          >
+            My Commissions
+          </a>
+        )}
       </div>
     );
   }

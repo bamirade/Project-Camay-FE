@@ -12,6 +12,7 @@ import Cart from "./pages/Cart";
 import ArtistProfile from "./pages/ArtistProfile";
 import ArtistList from "./pages/ArtistList";
 import ProductsList from "./pages/ProductsList";
+import MyCommissions from "./pages/MyCommissions";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -52,6 +53,7 @@ function App() {
             <>
               <Route path="/home" element={<Home />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/commissions" element={<MyCommissions />} />
             </>
           )}
           <Route path="*" element={<NotFound />} />
