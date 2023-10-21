@@ -43,28 +43,36 @@ function Header() {
     }
 
     const fetchData = async () => {
-      try {
-        const userType = localStorage.getItem("type");
-        const authToken = localStorage.getItem("token");
-        const apiUrl = `${key.API_URL}/commission/${userType?.toLowerCase()}`;
+      if (token) {
+        try {
+          const userType = localStorage.getItem("type");
+          const authToken = localStorage.getItem("token");
+          const apiUrl = `${key.API_URL}/commission/${userType?.toLowerCase()}`;
 
-        const response = await axios.get(apiUrl, {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        });
+          const response = await axios.get(apiUrl, {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          });
 
-        const commissions = response.data.commissions;
-        const nonCompletedCommissions = commissions.filter(
-          (commission: Commission) => commission.stage !== "Completed"
-        );
+          const commissions = response.data.commissions;
+          const nonCompletedCommissions = commissions.filter(
+            (commission: Commission) => commission.stage !== "Completed"
+          );
 
-        setCommissionCount(nonCompletedCommissions.length);
-      } catch (error) {
-        console.error("Error fetching commission data:", error);
+          setCommissionCount(nonCompletedCommissions.length);
+        } catch (error) {
+          console.error("Error fetching commission data:", error);
+        }
       }
     };
 
+    const wakeUp = async () => {
+      const res : { message: string } = await axios.get(`${key.API_URL}/wake`);
+      console.log(res)
+    };
+
+    wakeUp();
     fetchData();
   }, []);
 
@@ -164,7 +172,7 @@ function Header() {
             )}
             {type && (
               <a
-                href="/commissions"
+                href={isLoggedIn ? "/commissions" : "/login"}
                 className="text-black hover:text-gray-600 transition duration-300"
               >
                 <div className="relative py-2">
